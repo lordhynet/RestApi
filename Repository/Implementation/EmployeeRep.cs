@@ -7,6 +7,12 @@ namespace RestApi_5._0.Repository.Implementation
 {
     public class EmployeeRep : IEmployeeRepository
     {
+        private readonly AppDbContext _appDbContext;
+
+        public EmployeeRep(AppDbContext appDbContext)
+        {
+            _appDbContext = appDbContext;
+        }
         public async Task<IEnumerable<Employee>> Search(string name, Gender gender)
         {
             throw new System.NotImplementedException();
@@ -29,7 +35,11 @@ namespace RestApi_5._0.Repository.Implementation
 
         public async Task<Employee> AddEmployee(Employee employee)
         {
-            throw new System.NotImplementedException();
+            var result = await _appDbContext.Employees.AddAsync(employee);
+            await _appDbContext.SaveChangesAsync();
+            return result.Entity;
+
+
         }
 
         public async Task<Employee> UpdateEmployee(Employee employee)
