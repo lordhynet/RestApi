@@ -1,4 +1,5 @@
-﻿using RestApi_5._0.Model;
+﻿using Microsoft.EntityFrameworkCore;
+using RestApi_5._0.Model;
 using RestApi_5._0.Repository.Interfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -20,17 +21,22 @@ namespace RestApi_5._0.Repository.Implementation
 
         public async Task<IEnumerable<Employee>> GetEmployees()
         {
-            throw new System.NotImplementedException();
+            return await _appDbContext.Employees.ToListAsync();
+
         }
 
-        public async Task<Employee> GetEmployeeById(int id)
+        public async Task<Employee> GetEmployeeById(int employeeid)
         {
-            throw new System.NotImplementedException();
+            return await _appDbContext.Employees
+                .Include(e => e.Department)
+                .FirstOrDefaultAsync(c => c.EmployeeId == employeeid);
         }
 
         public async Task<Employee> GetEmployeeByEmail(string email)
         {
-            throw new System.NotImplementedException();
+            return await _appDbContext.Employees
+                .Include(e => e.Department)
+                .FirstOrDefaultAsync(c => c.Email == email);
         }
 
         public async Task<Employee> AddEmployee(Employee employee)
@@ -49,7 +55,13 @@ namespace RestApi_5._0.Repository.Implementation
 
         public async Task DeleteEmployee(int employeeid)
         {
-            throw new System.NotImplementedException();
+            var result = await _appDbContext.Employees
+                .FirstOrDefaultAsync(s => s.EmployeeId == employeeid);
+            if (result != null)
+            {
+                _appDbContext.Employees.Remove(result);
+                await _appDbContext.SaveChangesAsync();
+            }
         }
     }
 }
