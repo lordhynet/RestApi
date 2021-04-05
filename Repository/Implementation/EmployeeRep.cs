@@ -2,6 +2,7 @@
 using RestApi_5._0.Model;
 using RestApi_5._0.Repository.Interfaces;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace RestApi_5._0.Repository.Implementation
@@ -16,7 +17,19 @@ namespace RestApi_5._0.Repository.Implementation
         }
         public async Task<IEnumerable<Employee>> Search(string name, Gender gender)
         {
-            throw new System.NotImplementedException();
+            IQueryable<Employee> query = _appDbContext.Employees;
+            if (!string.IsNullOrEmpty(name))
+            {
+                query = query.Where(a => a.FirstName.Contains(name) ||
+                                         a.LastName.Contains(name));
+            }
+
+            if (gender != null)
+            {
+                query = query.Where(b => b.Gender == gender);
+            }
+
+            return await query.ToListAsync();
         }
 
         public async Task<IEnumerable<Employee>> GetEmployees()
