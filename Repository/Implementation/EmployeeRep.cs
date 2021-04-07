@@ -63,7 +63,25 @@ namespace RestApi_5._0.Repository.Implementation
 
         public async Task<Employee> UpdateEmployee(Employee employee)
         {
-            throw new System.NotImplementedException();
+            var result = await _appDbContext.Employees
+                .FirstOrDefaultAsync(x => x.EmployeeId == employee.EmployeeId);
+
+            if (result != null)
+            {
+                result.FirstName = employee.FirstName;
+                result.LastName = employee.LastName;
+                result.Email = employee.Email;
+                result.DateOfBirth = employee.DateOfBirth;
+                result.Gender = employee.Gender;
+                result.EmployeeId = employee.EmployeeId;
+                result.PhotoPath = employee.PhotoPath;
+
+                await _appDbContext.SaveChangesAsync();
+                return result;
+            }
+
+            return null;
+
         }
 
         public async Task DeleteEmployee(int employeeid)
