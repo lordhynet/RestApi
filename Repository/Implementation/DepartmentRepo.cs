@@ -2,7 +2,6 @@
 using RestApi_5._0.Model;
 using RestApi_5._0.Repository.Interfaces;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace RestApi_5._0.Repository.Implementation
@@ -22,13 +21,8 @@ namespace RestApi_5._0.Repository.Implementation
 
         public async Task<Department> GetDepartment(int departmentId)
         {
-            var result = await _context.Department.Where(c => c.DepartmentId == departmentId);
-            if (!result)
-            {
-                return result;
-            }
+            return await _context.Department.FirstOrDefaultAsync(c => c.DepartmentId == departmentId);
 
-            return null;
         }
     }
 }
