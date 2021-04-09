@@ -6,6 +6,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using RestApi_5._0.Model;
+using RestApi_5._0.Repository.Implementation;
+using RestApi_5._0.Repository.Interfaces;
 
 namespace RestApi_5._0
 {
@@ -24,6 +26,8 @@ namespace RestApi_5._0
 
             services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("Default")));
+            services.AddScoped<IDepartmentRepository, DepartmentRepo>();
+            services.AddScoped<IEmployeeRepository, EmployeeRep>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
