@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using RestApi_5._0.Model;
 using RestApi_5._0.Repository.Interfaces;
 using System;
 using System.Threading.Tasks;
@@ -26,24 +27,26 @@ namespace RestApi_5._0.Controllers
             }
             catch (Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Error retreivng data")
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error retreivng data");
             }
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetEmployeeById(int id)
+        [HttpGet("{id :int}")]
+        public async Task<ActionResult<Employee>> GetEmployeeById(int id)
         {
             try
             {
                 var result = await _employeeRepo.GetEmployeeById(id);
-                if (result != null)
+                if (result == null)
                 {
-
+                    return NotFound();
                 }
+
+                return result;
             }
             catch (Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Error retreivng data")
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error retreivng data");
             }
         }
     }
