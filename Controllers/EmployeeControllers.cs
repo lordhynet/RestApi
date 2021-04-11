@@ -49,5 +49,22 @@ namespace RestApi_5._0.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error retreivng data");
             }
         }
+
+        [HttpPost]
+        public async Task<ActionResult<Employee>> CreateEmployee(Employee employee)
+        {
+            try
+            {
+                if (employee == null)
+                    return BadRequest();
+                var newemployee = await _employeeRepo.AddEmployee(employee);
+                return CreatedAtAction(nameof(GetEmployeeById),
+                    new { id = newemployee.EmployeeId }, newemployee);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error creating data");
+            }
+        }
     }
 }
