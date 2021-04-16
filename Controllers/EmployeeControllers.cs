@@ -73,13 +73,13 @@ namespace RestApi_5._0.Controllers
             }
         }
         [HttpPut]
-        public async Task<ActionResult<Employee>> UpdateEmployee(Employee employee)
+        public async Task<ActionResult<Employee>> UpdateEmployee(int id, Employee employee)
         {
             try
             {
-                if (employee == null)
-                    return BadRequest();
-                var emp = _employeeRepo.GetEmployeeByEmail(employee.Email);
+                if (id != employee.EmployeeId)
+                    return BadRequest("Id mismatch");
+                var employeeToUpdate = await _employeeRepo.GetEmployeeByEmail(employee.Email);
                 if (emp != null)
                 {
                     ModelState.AddModelError("Email", "Employee email already in use");
