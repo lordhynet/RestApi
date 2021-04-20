@@ -4,6 +4,7 @@ using RestApi_5._0.Model;
 using RestApi_5._0.Repository.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace RestApi_5._0.Controllers
@@ -25,14 +26,19 @@ namespace RestApi_5._0.Controllers
         {
             try
             {
-                var result = await
+                var result = await _employeeRepo.Search(name, gender);
+                if (result.Any())
+                {
+                    return Ok(result);
+                }
 
+                return NotFound();
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
-                throw;
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error retreivng data");
             }
+
 
         }
 
