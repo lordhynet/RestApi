@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using RestApi_5._0.Model;
 using RestApi_5._0.Repository.Interfaces;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace RestApi_5._0.Controllers
@@ -16,6 +17,23 @@ namespace RestApi_5._0.Controllers
         public EmployeeControllers(IEmployeeRepository employeeRepository)
         {
             _employeeRepo = employeeRepository;
+        }
+
+
+        [HttpGet("{search}")]
+        public async Task<ActionResult<IEnumerable<Employee>>> Search(string name, Gender gender)
+        {
+            try
+            {
+                var result = await
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+
         }
 
         [HttpGet]
@@ -98,27 +116,22 @@ namespace RestApi_5._0.Controllers
 
         [HttpDelete("{id:int}")]
         public async Task<ActionResult<Employee>> DeleteEmployee(int id)
-
         {
             try
             {
 
-                var toDelete = await _employeeRepo.DeleteEmployee(id);
-                if (id != employee.EmployeeId)
-                    return BadRequest("Id mismatch");
-                var employeeToUpdate = await _employeeRepo.GetEmployeeById(id);
-                if (employeeToUpdate == null)
-                {
-                    return NotFound($"Employee with the Id = {id} not found");
-                }
-
-                return await _employeeRepo.UpdateEmployee(employee);
+                var toDelete = await _employeeRepo.GetEmployeeById(id);
+                if (toDelete == null)
+                    return NotFound($"Employee with id = {id} not found");
+                await _employeeRepo.DeleteEmployee(id);
+                return Ok($"Employee with id = {id} Deleted");
 
             }
             catch (Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Error updating data");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error deleting data");
             }
 
         }
     }
+}
