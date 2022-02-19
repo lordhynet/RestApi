@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 
 namespace RestApi_5._0.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("[controller]")]
     public class EmployeeControllers : ControllerBase
     {
         private readonly IEmployeeRepository _employeeRepo;
@@ -21,7 +21,7 @@ namespace RestApi_5._0.Controllers
         }
 
 
-        [HttpGet("{search}")]
+        [HttpGet("Search-user{search}")]
         public async Task<ActionResult<IEnumerable<Employee>>> Search(string name, Gender gender)
         {
             try
@@ -42,7 +42,7 @@ namespace RestApi_5._0.Controllers
 
         }
 
-        [HttpGet]
+        [HttpGet("get-employee")]
         public async Task<IActionResult> GetEmployee()
         {
             try
@@ -55,7 +55,7 @@ namespace RestApi_5._0.Controllers
             }
         }
 
-        [HttpGet("{id :int}")]
+        [HttpGet("get-employee-by-id{id :int}")]
         public async Task<ActionResult<Employee>> GetEmployeeById(int id)
         {
             try
@@ -74,7 +74,7 @@ namespace RestApi_5._0.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPost("create-employee")]
         public async Task<ActionResult<Employee>> CreateEmployee(Employee employee)
         {
             try
@@ -98,7 +98,7 @@ namespace RestApi_5._0.Controllers
             }
         }
 
-        [HttpPut("{id:int}")]
+        [HttpPut("update-employee{id:int}")]
         public async Task<ActionResult<Employee>> UpdateEmployee(int id, Employee employee)
         {
             try
@@ -120,7 +120,7 @@ namespace RestApi_5._0.Controllers
             }
         }
 
-        [HttpDelete("{id:int}")]
+        [HttpDelete("delete-employee{id:int}")]
         public async Task<ActionResult<Employee>> DeleteEmployee(int id)
         {
             try

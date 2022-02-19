@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace RestApi_5._0.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("[controller]")]
     public class DepartmentController : ControllerBase
     {
         private readonly IDepartmentRepository _deptRepo;
@@ -18,7 +18,7 @@ namespace RestApi_5._0.Controllers
             _deptRepo = departmentRepository;
         }
 
-        [HttpGet]
+        [HttpGet("Get-Departments")]
         public async Task<ActionResult> GetDepartments()
         {
             try
@@ -30,7 +30,7 @@ namespace RestApi_5._0.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error retreivng data");
             }
         }
-        [HttpGet("{id :int}")]
+        [HttpGet("Get-department-by-id{id :int}")]
         public async Task<ActionResult<Department>> GetDepartment(int id)
         {
             try
